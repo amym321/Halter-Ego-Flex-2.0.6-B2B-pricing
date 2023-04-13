@@ -1,0 +1,19 @@
+{% comment %}
+  To edit the contents of this file, look inside the `sections` folder for the file name that comes directly after `section`. Eg. {% section 'product__main' %} or {% section 'page__banner' %}
+{% endcomment %}
+
+<main id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section default-page">
+  <section class="section__wrapper
+                  section
+                  ">
+    <div class="container">
+      {% if page.handle == 'shop-instagram' %}
+      <div class="ssw-html-widget ssw-instagram-widget" data-module="service" data-columns_count_for_grid="4" data-rows_count="3" data-spaces="3" data-force="1" data-count_instaimages_in_row="5" data-type="masonry" data-gallery_id="1"  data-name="instagramPhotos">
+        <div class="ssw-page-loading"><span class="ssw-spin ssw-loader"></span></div>
+      </div>
+      {% else %}
+      {% section 'page__main' %}
+      {% endif %}      
+    </div>
+  </section>
+</main>

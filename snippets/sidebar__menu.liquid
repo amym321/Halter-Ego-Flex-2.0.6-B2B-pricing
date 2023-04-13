@@ -1,0 +1,141 @@
+{% assign sidebar_menu = linklists[menu] %}
+{% if sidebar_menu != blank %}
+  <ul class="blog_list toggle_list">
+    {% for link in sidebar_menu.links %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+
+      {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
+        {% assign parent_link = false %}
+      {% else %}
+        {% assign parent_link = true %}
+      {% endif %}
+
+      <li>
+        <a class="parent-link--{{ parent_link }} {% if link.active or link.child_active %}active{% endif %}" {% if parent_link %}href="{{ link.url }}"{% endif %}>
+          {{ link.title }}</a>
+
+        {% if link.links != blank %}
+          <span class="menu-toggle" aria-haspopup="true" aria-expanded="false"><span>+</span></span>
+
+          <ul class="{% if link.active or link.child_active %}active{% endif %}">
+            {% for sub_link in link.links %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: sub_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+
+              {% if sub_link.url == 'http://' or sub_link.url == '' or sub_link.url == '/' or sub_link.url == 'https://' or sub_link.url == '#' %}
+                {% assign parent_link = false %}
+              {% else %}
+                {% assign parent_link = true %}
+              {% endif %}
+
+              <li class="sub-menu {% if sub_link.active or sub_link.child_active %}active{% endif %}">
+                <a class="parent-link--{{ parent_link }} {% if sub_link.active or sub_link.child_active %}active{% endif %}" {% if parent_link %}href="{{ sub_link.url }}"{% endif %}>
+                  {{ sub_link.title }}</a>
+                {% if sub_link.links != blank %}
+                  <span class="menu-toggle" aria-haspopup="true" aria-expanded="false"><span>+</span></span>
+
+                  <ul class="{% if sub_link.active or sub_link.child_active %}active{% endif %}">
+                    {% for sub_sub_link in sub_link.links %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: sub_sub_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+                      <li class="sub-menu">
+                        <a {% if sub_sub_link.active %}class="active"{% endif %} href="{{ sub_sub_link.url }}">{{ sub_sub_link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <h4 class="toggle" aria-haspopup="true" aria-expanded="false"><span>+</span>Menu title</h4>
+  <ul class="blog_list toggle_list content_block">
+    <li><p>{{ 'homepage.onboarding.no_content' | t }}</p></li>
+  </ul>
+{% endif %}
+
+
+{%- comment -%} {% if menu != blank %}
+  <div data-has-toggle-option>
+    <h3 class="sidebar-block__heading" {% if settings.toggle_sidebar %}data-sidebar-block__toggle="closed" aria-label="toggle"{% endif %}>
+      {{ linklists[menu].title }}
+      {% if settings.toggle_sidebar %}
+        <button class="sidebar-block__toggle-icon icon-style--{{ settings.toggle_icon_style }}">
+          {% if settings.toggle_icon_style == 'plus_and_minus' %}
+            {% render 'icon',
+                    name: 'plus',
+                    icon_class: 'icon--active'
+            %}
+            {% render 'icon', name: 'minus' %}
+          {% else %}
+            {% render 'icon',
+                    name: 'down-caret',
+                    icon_class: 'icon--active'
+            %}
+          {% endif %}
+        </button>
+      {% endif %}
+    </h3>
+  </div>
+  <ul class="sidebar-block__content" {% if settings.toggle_sidebar %}data-sidebar-block__content--collapsible{% endif %}>
+    {% for link in linklists[menu].links %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <li class="sidebar-block__item">
+        <a {% if link.active %}class="active"{% endif %} href="{{ link.url }}" title="{{ link.title | escape }}">
+          {{ link.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div data-has-toggle-option>
+    <h3 class="sidebar-block__heading" {% if settings.toggle_sidebar %}data-sidebar-block__toggle="closed" aria-label="toggle"{% endif %}>
+      {{ 'homepage.onboarding.menu_title' | t }}
+      {% if settings.toggle_sidebar %}
+        <button class="sidebar-block__toggle-icon icon-style--{{ settings.toggle_icon_style }}">
+          {% if settings.toggle_icon_style == 'plus_and_minus' %}
+            {% render 'icon',
+                    name: 'plus',
+                    icon_class: 'icon--active'
+            %}
+            {% render 'icon', name: 'minus' %}
+          {% else %}
+            {% render 'icon',
+                    name: 'down-caret',
+                    icon_class: 'icon--active'
+            %}
+          {% endif %}
+        </button>
+      {% endif %}
+    </h3>
+  </div>
+  <ul class="sidebar-block__content" {% if settings.toggle_sidebar %}data-sidebar-block__content--collapsible{% endif %}>
+    <li><p>{{ 'homepage.onboarding.no_content' | t }}</p></li>
+  </ul>
+{% endif %} {%- endcomment -%}
