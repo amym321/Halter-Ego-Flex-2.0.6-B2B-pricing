@@ -1,4 +1,15 @@
-<div id="theme-ajax-cart" class="theme-ajax-cart shopify-section {% if context == 'mobile-header' %}jsAjaxCart{% endif %} is-{{ settings.cart_action | replace: '_', '-' }} theme-ajax-cart--header-{{ settings.header_layout }}" data-ajax-cart-{{ settings.cart_action }}>
+{% assign wholesale = false %}
+{% if customer.tags != blank %}
+  {% for tag in customer.tags %}
+    {% if tag == 'wholesale' %}
+      {% assign wholesale = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+<div id="theme-ajax-cart" class="theme-ajax-cart shopify-section  {% if context == 'mobile-header' %}jsAjaxCart{% endif %} is-{{ settings.cart_action | replace: '_', '-' }} 
+    {% if wholesale == true %} wholesale {% endif %} theme-ajax-cart--header-{{ settings.header_layout }}" data-ajax-cart-{{ settings.cart_action }}>
   <section class="ajax-cart ajax-cart--{{ settings.cart_action | replace: '_', '-' }}">
     {% comment %} Inner ajax cart content can be found in templates/cart.ajax.liquid {% endcomment %}
 
