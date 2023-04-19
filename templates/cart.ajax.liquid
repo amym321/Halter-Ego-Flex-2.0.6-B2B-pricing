@@ -1,5 +1,15 @@
 {% layout none %}
 
+{% comment %} hide prices on cart drawer for wholesale customers - am {% endcomment %}
+{% assign wholesale = false %}
+{% if customer.tags != blank %}
+  {% for tag in customer.tags %}
+    {% if tag == 'wholesale' %}
+      {% assign wholesale = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 <template data-options>
   {
     "item_count": {{ cart.item_count | json }}
@@ -139,7 +149,7 @@
             </div>
             <div class="ajax-cart__line-items-discount">
             {% if WCItem_OriginalPrice != WCItem_FinalPrice %}
-              <div class="ajax-cart__price-comparison">
+              <div class="ajax-cart__price-comparison {% if wholesale == true %} wholesale {% endif %} ">
                 <p class="sale">
                   <span class="money">
                     {% render 'price-element', price: WCItem_FinalPrice %}
@@ -154,15 +164,14 @@
                 {% endif %}
               </div>
               {% for discount_allocation in item.line_level_discount_allocations %}
-                <div class="line-item-discount__container">
+                <div class="line-item-discount__container {% if wholesale == true %} wholesale {% endif %} ">
                   <p>{{ discount_allocation.discount_application.title }}</p>
                 </div>
               {% endfor %}
             {% endif %}
             </div>
-
             {% if item.line_level_discount_allocations.size < 1 %}
-            <div class="ajax-cart__price price">
+            <div class="ajax-cart__price price {% if wholesale == true %} wholesale {% endif %} ">
               <span class="money {% if WCItem_OriginalPrice < WCItem_CompareAtPrice %}sale{% endif %}">
                 {% render 'price-element', price: WCItem_OriginalLinePrice %}
               </span>
@@ -203,7 +212,7 @@
 
     <div class="ajax-cart__details-wrapper">
       {%- if cart.cart_level_discount_applications != blank -%}
-        <div class="cart__discounts ajax-cart__details-row is-flex is-justify-space-between sale">
+        <div class="{% if wholesale == true %} wholesale {% endif %} cart__discounts ajax-cart__details-row is-flex is-justify-space-between sale">
         {%- for discount_application in cart.cart_level_discount_applications -%}
           <div class="ajax-cart__row-description">
             <p>{{- discount_application.title -}}</p>
@@ -218,7 +227,7 @@
       {%- endif -%}
 
       {% comment %} Subtotal {% endcomment %}
-      <div class="ajax-cart__subtotal ajax-cart__details-row is-flex is-justify-space-between">
+      <div class="{% if wholesale == true %} wholesale {% endif %} ajax-cart__subtotal ajax-cart__details-row is-flex is-justify-space-between">
         <div class="ajax-cart__row-description">
           <span>{{ 'layout.general.subtotal' | t }}:</span>
         </div>
@@ -229,7 +238,7 @@
 
       {% comment %} Total savings {% endcomment %}
       {% if settings.display_savings and total_saving > 0 %}
-        <div class="ajax-cart__savings ajax-cart__details-row is-flex is-justify-space-between sale">
+        <div class="{% if wholesale == true %} wholesale {% endif %} ajax-cart__savings ajax-cart__details-row is-flex is-justify-space-between sale">
           <div class="ajax-cart__row-description">
             <span>{{ 'layout.general.savings' | t }}:</span>
           </div>

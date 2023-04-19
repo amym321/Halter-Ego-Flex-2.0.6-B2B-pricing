@@ -15871,10 +15871,11 @@ $subtotal-bg-color: #F2F2F2;
 ================================================== */
 
 /* cart drawer hidden for wholesale -am*/
-.is-mini-cart.wholesale {
+.is-mini-cart.wholesale,
+.ajax-cart__form  .wholesale {
   visibility:0 !important;
   opacity: 0 !important;
-  display:none;
+  display: none !important;
 }
 
 /* hide the 2nd incorrect AfterPay message on wholesale cart */
