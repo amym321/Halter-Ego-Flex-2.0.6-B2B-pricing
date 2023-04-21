@@ -108,17 +108,10 @@
   {{ 'custom-styles.css' | asset_url | stylesheet_tag }}
   {% render 'swatchify-init' %}
   {% include 'judgeme_core' %}
-    {% section 'filter-menu-settings' %}
 
   {%- comment -%} End custom code {%- endcomment -%}
 
 
-
-
-{% if content_for_header contains 'fastbundle.co' %}
-    {% render 'fast_bundle_service' %}
-{% endif %}
-<script type="text/javascript" src="//script.crazyegg.com/pages/scripts/0053/7449.js" async="async" ></script>
 </head>
 
 {% if template.name == 'index' %}
@@ -275,10 +268,6 @@
   {% endif %}
 
   {%- comment -%} Custom code {%- endcomment -%}
-  <!-- **BEGIN** Hextom USB Integration // Main Include - DO NOT MODIFY -->
-    {% render 'hextom_usb_main', product: product, customer: customer %}
-  <!-- **END** Hextom USB Integration // Main Include - DO NOT MODIFY -->
-  {% include 'wisepops-generated' %}
   <script async defer src="//assets.pinterest.com/js/pinit.js"></script>
   {% render 'special-offers' %}
 
