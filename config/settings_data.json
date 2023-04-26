@@ -238,7 +238,7 @@
     "flickr_link": "",
     "email_link": "",
     "favicon": "shopify:\/\/shop_images\/HALTER_EGO_Logo_b8247519-dba1-441a-90c6-11864ac80c6a.png",
-    "custom_sale_message": true,
+    "custom_sale_message": false,
     "custom_sale_discount": "40",
     "custom_sale_date": "June 30, 2023",
     "custom_sale_time": "01:00",
