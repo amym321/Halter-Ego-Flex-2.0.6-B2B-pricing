@@ -1,3 +1,13 @@
+{% comment %} DOn't display sale prices for wholesale customers other than the 50% for wholesale - am {% endcomment %}
+{% assign wholesale = false %}
+{% if customer.tags != blank %}
+  {% for tag in customer.tags %}
+    {% if tag == 'wholesale' %}
+      {% assign wholesale = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 
 {% comment %} Wholesale_Club_Product_Prices Start {% endcomment %}
 {% assign base_product = product %}
@@ -322,7 +332,8 @@
                 {%- endif -%}
               {%- endfor -%}
 <!-- {{ sale_on }} {{ sale_active }} {{ sale_collection_found }} -->
-              {% if sale_on == true and sale_active == true and sale_collection_found == true %}
+              {% comment %} run this for retail only (non-wholesale) - am {% endcomment %}
+              {% if wholesale == false and sale_on == true and sale_active == true and sale_collection_found == true %}
                 {%- assign percentage = sale_discount | divided_by: 100.0 -%}
                 {%- assign discount = WCProduct_VariantPrice | times: percentage -%}
                 {%- assign new_price = WCProduct_VariantPrice | minus: discount | split: '.' | first -%}
@@ -390,7 +401,7 @@
               {% endif %}
 
               {%- comment -%} Custom code! {%- endcomment -%}
-              {% if sale_on == true and sale_active == true and sale_collection_found == true %}
+              {% if wholesale == false and sale_on == true and sale_active == true and sale_collection_found == true %}
                 {% comment %} Savings {% endcomment %}
                 <span class="sale savings">
                   {% if WCProduct_VariantPrice < WCProduct_VariantComparePrice and variant.available %}
