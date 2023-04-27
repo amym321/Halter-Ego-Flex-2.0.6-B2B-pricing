@@ -12,6 +12,16 @@
 {% assign css_class = section.settings.css_class %}
 {% assign custom_css = section.settings.custom_css %}
 
+{% comment %} pass Free Shipping discount for non-wholesale customers - am {% endcomment %}
+{% assign wholesale = false %}
+{% if customer.tags != blank %}
+  {% for tag in customer.tags %}
+    {% if tag == 'wholesale' %}
+      {% assign wholesale = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 {% comment %} CSS {% endcomment %}
 {% style %}
   .section__wrapper {
@@ -50,8 +60,12 @@
 
   <div class="cart__form {% if cart.item_count == 0 %}is-hidden{% endif %}"
       data-current-discount="{{ cart.total_discount }}">
-    <form action="{{ routes.cart_url }}" method="post" id="cart_form" class="{% if cart.item_count == 0 %}visuallyhidden{% endif %} quantity-box-enabled-{{ section.settings.display_product_quantity_cart }}">
-
+      {% comment %} automatically add free shipping discount for retail - am {% endcomment %}
+    {% if wholesale == true %}
+      <form action="{{ routes.cart_url }}" method="post" id="cart_form" class="{% if cart.item_count == 0 %}visuallyhidden{% endif %} quantity-box-enabled-{{ section.settings.display_product_quantity_cart }}">
+    {% else %}
+      <form action="/cart?discount=freeship100" method="post" id="cart_form" class="{% if cart.item_count == 0 %}visuallyhidden{% endif %} quantity-box-enabled-{{ section.settings.display_product_quantity_cart }}">
+    {% endif %}
       <div class="container medium-down--hide">
         <div class="cart__headings column">
           <div class="cart__product-title">
@@ -394,7 +408,11 @@
 
         </div>
       </div>
-    </form>
+    {% if wholesale == true %}
+      </form>
+    {% else %}
+      </form>
+    {% endif %}
   </div>
 
   {% if settings.enable_shipping_calculator == true %}
