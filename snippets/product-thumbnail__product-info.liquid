@@ -229,13 +229,16 @@
           {% if product.price_varies and WCProduct_PriceMin > 0 %}
             <small><em>{{ 'products.general.from' | t }}</em></small>
           {% endif %}
-          {% if WCProduct_PriceMin > 0 %}
+
+          {% comment %} changed from WCProduct_PriceMin to WCProduct_VariantPrice to capture the B2B 50% off - am  {% endcomment %}
+          {% if WCProduct_VariantPrice > 0 %}
             <span class="money">
-              {% render 'price-element', price: WCProduct_PriceMin %}
+              {% render 'price-element', price: WCProduct_VariantPrice %}
             </span>
           {% else %}
             {{ settings.free_price_text }}
           {% endif %}
+
           {% if WCProduct_ComparePriceMax > WCProduct_Price %}
             <span class="product-thumbnail__was-price was-price">
               <span class="money">
