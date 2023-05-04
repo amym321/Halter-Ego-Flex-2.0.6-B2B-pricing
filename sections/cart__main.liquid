@@ -12,7 +12,7 @@
 {% assign css_class = section.settings.css_class %}
 {% assign custom_css = section.settings.custom_css %}
 
-{% comment %} pass Free Shipping discount for non-wholesale customers - am {% endcomment %}
+{% comment %} display total using compare-at-prices (not regular prices) for wholesale customers - am {% endcomment %}
 {% assign wholesale = false %}
 {% if customer.tags != blank %}
   {% for tag in customer.tags %}
@@ -21,6 +21,9 @@
     {% endif %}
   {% endfor %}
 {% endif %}
+
+{% comment %} add up the compare-at-prices or regular price for cart total b4 discounts - am {% endcomment %}
+{% assign wholesale_cart_pretotal = 0 %}
 
 {% comment %} CSS {% endcomment %}
 {% style %}
@@ -60,12 +63,7 @@
 
   <div class="cart__form {% if cart.item_count == 0 %}is-hidden{% endif %}"
       data-current-discount="{{ cart.total_discount }}">
-      {% comment %} automatically add free shipping discount for retail - am {% endcomment %}
-    {% if wholesale == true %}
       <form action="{{ routes.cart_url }}" method="post" id="cart_form" class="{% if cart.item_count == 0 %}visuallyhidden{% endif %} quantity-box-enabled-{{ section.settings.display_product_quantity_cart }}">
-    {% else %}
-      <form action="/cart?discount=freeship100" method="post" id="cart_form" class="{% if cart.item_count == 0 %}visuallyhidden{% endif %} quantity-box-enabled-{{ section.settings.display_product_quantity_cart }}">
-    {% endif %}
       <div class="container medium-down--hide">
         <div class="cart__headings column">
           <div class="cart__product-title">
@@ -291,6 +289,11 @@
                 </a>
               </div>
             </div>
+
+            {% comment %} add up the compare-at-prices for cart total b4 discount - am {% endcomment %}
+            {% assign original_price_x_quantity = WCItem_OriginalPrice | times: item.quantity %}
+            {% assign wholesale_cart_pretotal = wholesale_cart_pretotal | plus: original_price_x_quantity %}
+
           {% endfor %}
 
           <div class="cart__cost-summary container is-flex-column">
@@ -315,7 +318,14 @@
                 </div>
                 <p class="h3 cart__subtotal">
                   <span class="saso-cart-original-total">
-                    <span style="display: block; text-align: right;" class="saw-extra-note"></span><span class="saw-cart-original-total">{% render 'price-element', price: cart.total_price %}</span><br><span class="saw-cart-total"></span>
+                    <span style="display: block; text-align: right;" class="saw-extra-note"></span>
+                    {% comment %} 77 displays as total_price if not wholesale, or sum of compare-at-price if wholesale - am{% endcomment %}
+                    {% if wholesale == true %}
+                      <span class="wholesale-pretotal saw-cart-original-total">{% render 'price-element', price: wholesale_cart_pretotal %}</span>
+                    {% else %}
+                      <span class="retail saw-cart-original-total">{% render 'price-element', price: cart.total_price %}</span>
+                    {% endif %}
+                    <br><span class="total-if-discounts-shown saw-cart-total"></span>
                   </span>
                   <span class="saso-cart-total"></span>
                 </p>
@@ -408,11 +418,7 @@
 
         </div>
       </div>
-    {% if wholesale == true %}
       </form>
-    {% else %}
-      </form>
-    {% endif %}
   </div>
 
   {% if settings.enable_shipping_calculator == true %}
