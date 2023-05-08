@@ -38,7 +38,9 @@
       {% for item in cart.items %}
 {% comment %} Wholesale_Club_Item_Prices Start {% endcomment %}
 {% if item.product %}{% assign base_product = item.product %}{% else %}{% assign base_product = item %}{% endif %}
-{% if item.variant %}{% assign base_variant = item.variant %}{% else %}{% assign base_variant = item.selected_or_first_available_variant %}{% endif %}
+{% comment %} corrected Orbit's reference of nonexistent variable to correct one - am {% endcomment %}
+{% comment %} if item.variant  assign base_variant = item.variant  else  assign base_variant = item.selected_or_first_available_variant  endif  {% endcomment %}
+{% if item.variant %}{% assign base_variant = item.variant %}{% else %}{% assign base_variant = item.product.selected_or_first_available_variant %}{% endif %}
 
 {% if shop.metafields.sawholesale['base_price'] == blank %}
   {% assign base_price = 'compare_at_price' %}
@@ -79,11 +81,22 @@
   {% assign WCItem_OriginalPrice = item.original_price %}
   {% assign WCItem_FinalPrice = item.final_price %}
   {% assign WCItem_Price = item.price %}
-  {% assign WCItem_PriceMin = item.price_min %}
-  {% assign WCItem_PriceMax = item.price_max %}
-  {% assign WCItem_CompareAtPrice = item.compare_at_price %}
-  {% assign WCItem_CompareAtPriceMin = item.compare_at_price_min %}
-  {% assign WCItem_CompareAtPriceMax = item.compare_at_price_max %}
+  {% comment %} corrected Orbit's reference of nonexistent variable to correct one - am {% endcomment %}
+  {% comment %} assign WCItem_PriceMin = item.price_min {% endcomment %}
+  {% comment %} assign WCItem_PriceMax = item.price_max {% endcomment %}
+  {% assign WCItem_PriceMin = item.product.price_min %}
+  {% assign WCItem_PriceMax = item.product.price_max %}
+
+  {% comment %} corrected Orbit's reference of nonexistent variable to correct one - am {% endcomment %}
+  {% comment %} assign WCItem_CompareAtPrice = item.compare_at_price  {% endcomment %}
+  {% assign WCItem_CompareAtPrice = item.variant.compare_at_price %}
+
+  {% comment %} corrected Orbit's reference of nonexistent variables to correct ones- am {% endcomment %}
+  {% comment %} assign WCItem_CompareAtPriceMin = item.compare_at_price_min {% endcomment %}
+  {% comment %} assign WCItem_CompareAtPriceMax = item.compare_at_price_max {% endcomment %}
+  {% assign WCItem_CompareAtPriceMin = item.product.compare_at_price_min %}
+  {% assign WCItem_CompareAtPriceMax = item.product.compare_at_price_max %}
+
   {% assign WCItem_OriginalLinePrice = item.original_line_price %}
   {% assign WCItem_FinalLinePrice = item.final_line_price %}
   {% assign WCItem_LinePrice = item.line_price %}
@@ -91,8 +104,13 @@
   {% assign WCItem_OriginalPrice = saw_variant_compare_at_price %}
   {% assign WCItem_FinalPrice = saw_variant_price %}
   {% assign WCItem_Price = saw_variant_price %}
-  {% assign WCItem_PriceMin = item.price_min | times: saw_discount %}
-  {% assign WCItem_PriceMax = item.price_max | times: saw_discount %}
+
+  {% comment %} corrected Orbit's reference of nonexistent variables to correct ones- am {% endcomment %}
+  {% comment %} assign WCItem_PriceMin = item.price_min | times: saw_discount {% endcomment %}
+  {% comment %} assign WCItem_PriceMax = item.price_max | times: saw_discount {% endcomment %}
+  {% assign WCItem_PriceMin = item.product.price_min | times: saw_discount %}
+  {% assign WCItem_PriceMax = item.product.price_max | times: saw_discount %}
+
   {% assign WCItem_CompareAtPrice = saw_variant_compare_at_price %}
   {% if base_product.compare_at_price_min != 0 %}{% assign WCItem_CompareAtPriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCItem_CompareAtPriceMin = base_product.price_min %}{% endif %}
   {% if base_product.compare_at_price_max != 0 %}{% assign WCItem_CompareAtPriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCItem_CompareAtPriceMax = base_product.price_max %}{% endif %}
