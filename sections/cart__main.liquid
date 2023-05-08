@@ -97,17 +97,6 @@
 {% comment %} if item.variant  assign base_variant = item.variant  else  assign base_variant = item.selected_or_first_available_variant  endif  {% endcomment %}
 {% if item.variant %}{% assign base_variant = item.variant %}{% else %}{% assign base_variant = item.product.selected_or_first_available_variant %}{% endif %}
 
-        <div>xxx 50 item.product =.id {{item.product}}</div> {% comment %} ProductDrop {% endcomment %}
-        <div>xxx 50.2 item.product = {{item.product.id}}</div> {% comment %} ProductDrop {% endcomment %}
-        <div>xxx 51 item = {{item}}</div>{% comment %} CartItemDrop {% endcomment %}
-        <div>xxx 51.2 item.id = {{item.id}}</div>{% comment %} CartItemDrop {% endcomment %}
-        <div>xxx 52 item.variant = {{item.variant}}</div> {% comment %} Product Variant Drop {% endcomment %}
-        <div>xxx 52.2 item.variant.id = {{item.variant.id}}</div> {% comment %} Product Variant Drop {% endcomment %}
-        <div>xxx 53 item.selected_or_first_available_variant = {{item.selected_or_first_available_variant}}</div> {% comment %} blank {% endcomment %}
-        <div>xxx 54 item.product.selected_or_first_available_variant = {{item.product.selected_or_first_available_variant}}</div> {% comment %} ProductVariantDrop {% endcomment %}
-        <div>xxx 54.2 item.product.selected_or_first_available_variant.id = {{item.product.selected_or_first_available_variant.id}}</div> {% comment %} ProductVariantDrop {% endcomment %}
-        <div>xxx 55 shop.metafields.sawholesale['base_price'] = {{shop.metafields.sawholesale['base_price']}}</div>{% comment %} blank {% endcomment %}
-
 
 {% if shop.metafields.sawholesale['base_price'] == blank %}
   {% assign base_price = 'compare_at_price' %}
@@ -131,19 +120,11 @@
 
 {% assign saw_discount = 1 | minus: saw_discount %}
 
-
-        <div>xxx 1 base_price = {{base_price}}</div>  {% comment %} "compare_at_price" {% endcomment %}
-        <div>xxx 2 base_variant.compare_at_price = {{base_variant.compare_at_price}}</div> {% comment %} 189 {% endcomment %}
-        <div>xxx 3 base_variant.price = {{base_variant.price}}</div> {% comment %} 139 {% endcomment %}
-
 {% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
   {% assign saw_variant_compare_at_price = base_variant.price %}
 {% else %}
   {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
 {% endif %}
-
-      <div>xxx 4 saw_variant_compare_at_price = {{saw_variant_compare_at_price}}</div> {% comment %} 189 {% endcomment %}
-
 
 {% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
 {% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
@@ -152,56 +133,29 @@
   {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
 {% endif %}
 
-          <div>xxx 5 base_variant.metafields.sawholesale[price_key] = {{base_variant.metafields.sawholesale[price_key]}}</div>  {% comment %} blank {% endcomment %}
-          <div>xxx 6 cpe = {{cpe}}</div>  {% comment %} false {% endcomment %}
-          <div>xxx 7 saw_has_discount = {{saw_has_discount}}</div>  {% comment %} false {% endcomment %}
-          <div>xxx 8 saw_variant_price = {{saw_variant_price}}</div>  {% comment %} 189 {% endcomment %}
-          <div>xxx 4 saw_variant_compare_at_price  = {{saw_variant_compare_at_price }}</div> {% comment %} 189 {% endcomment %}
-
-
 {% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
-        <div>xxx loop 1</div> {% comment %} on sale breeches retail {% endcomment %}
-
   {% assign WCItem_OriginalPrice = item.original_price %}
-        <div>xxx 30 item.original_price = {{item.original_price}}</div> {% comment %} 139 {% endcomment %}
   {% assign WCItem_FinalPrice = item.final_price %}
-        <div>xxx 31 item.final_price  = {{item.final_price }}</div> {% comment %} 139 {% endcomment %}
   {% assign WCItem_Price = item.price %}
-        <div>xxx 32 item.price  = {{item.price }}</div> {% comment %} 139 {% endcomment %}
   {% comment %} corrected Orbit's reference of nonexistent variable to correct one - am {% endcomment %}
   {% comment %} assign WCItem_PriceMin = item.price_min {% endcomment %}
   {% comment %} assign WCItem_PriceMax = item.price_max {% endcomment %}
   {% assign WCItem_PriceMin = item.product.price_min %}
   {% assign WCItem_PriceMax = item.product.price_max %}
-          <div>xxx 33 item.product.price_min = {{item.product.price_min}}</div> {% comment %} 139 {% endcomment %}
-          <div>xxx 34 item.product.price_max = {{item.product.price_max}}</div> {% comment %} 139 {% endcomment %}
 
   {% comment %} corrected Orbit's reference of nonexistent variable to correct one - am {% endcomment %}
   {% comment %} assign WCItem_CompareAtPrice = item.compare_at_price  {% endcomment %}
   {% assign WCItem_CompareAtPrice = item.variant.compare_at_price %}
-        <div>xxx 10.2 item.compare_at_price = {{item.compare_at_price}}</div> {% comment %} blank{% endcomment %}
-        <div>xxx **10.5 item.variant.compare_at_price  = {{item.variant.compare_at_price }}</div>
-        <div>xxx **10.6 item.product.compare_at_price  = {{item.product.compare_at_price }}</div>
 
   {% comment %} corrected Orbit's reference of nonexistent variables to correct ones- am {% endcomment %}
   {% comment %} assign WCItem_CompareAtPriceMin = item.compare_at_price_min {% endcomment %}
   {% comment %} assign WCItem_CompareAtPriceMax = item.compare_at_price_max {% endcomment %}
   {% assign WCItem_CompareAtPriceMin = item.product.compare_at_price_min %}
   {% assign WCItem_CompareAtPriceMax = item.product.compare_at_price_max %}
-          <div>xxx 10.7 item.product.compare_at_price_min = {{item.product.compare_at_price_min}}</div>{% comment %} 189 {% endcomment %}
-          <div>xxx 10.8 item.product.compare_at_price_max = {{item.product.compare_at_price_max}}</div>{% comment %} 189 {% endcomment %}
-
   {% assign WCItem_OriginalLinePrice = item.original_line_price %}
   {% assign WCItem_FinalLinePrice = item.final_line_price %}
   {% assign WCItem_LinePrice = item.line_price %}
-          <div>xxx 10.9 item.original_line_price = {{item.original_line_price}}</div>{% comment %} 139 {% endcomment %}
-          <div>xxx 10.10 item.final_line_price = {{item.final_line_price}}</div>{% comment %} 139 {% endcomment %}
-          <div>xxx 10.11 item.line_price = {{item.line_price}}</div>{% comment %} 139 {% endcomment %}
-
-
 {% else %}
-        <div>xxx loop 2</div> {% comment %} sale breeches wholesale {% endcomment %}
-
   {% assign WCItem_OriginalPrice = saw_variant_compare_at_price %}
   {% assign WCItem_FinalPrice = saw_variant_price %}
   {% assign WCItem_Price = saw_variant_price %}
@@ -210,19 +164,7 @@
   {% comment %} assign WCItem_PriceMax = item.price_max | times: saw_discount {% endcomment %}
   {% assign WCItem_PriceMin = item.product.price_min | times: saw_discount %}
   {% assign WCItem_PriceMax = item.product.price_max | times: saw_discount %}
-            <div>xxx 20.00 item.product.price_min = {{item.product.price_min}}</div> {% comment %} 139 {% endcomment %}
-            <div>xxx 20.01 item.product.price_max = {{item.product.price_max}}</div> {% comment %} 139 {% endcomment %}
-
   {% assign WCItem_CompareAtPrice = saw_variant_compare_at_price %}
-
-            <div>xxx 20.1 WCItem_CompareAtPrice = {{ WCItem_CompareAtPrice}}</div> {% comment %} 189 {% endcomment %}
-            <div>xxx 20.2 item.compare_at_price = {{item.compare_at_price}}</div> {% comment %} blank {% endcomment %}
-            <div>xxx 20.22 item.product.compare_at_price = {{item.product.compare_at_price}}</div> {% comment %} 189 {% endcomment %}
-                    <div>xxx **20.5 item.variant.compare_at_price  = {{item.variant.compare_at_price }}</div> {% comment %} 189 {% endcomment %}
-                    <div>xxx 20.6 item.product.compare_at_price_min = {{item.product.compare_at_price_min}}</div> {% comment %} 189 {% endcomment %}
-                    <div>xxx 20.62 item.variant.compare_at_price_min = {{item.variant.compare_at_price_min}}</div> {% comment %} blank{% endcomment %}
-
-
   {% if base_product.compare_at_price_min != 0 %}{% assign WCItem_CompareAtPriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCItem_CompareAtPriceMin = base_product.price_min %}{% endif %}
   {% if base_product.compare_at_price_max != 0 %}{% assign WCItem_CompareAtPriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCItem_CompareAtPriceMax = base_product.price_max %}{% endif %}
   {% assign WCItem_OriginalLinePrice = WCItem_OriginalPrice | round | times: item.quantity %}
@@ -231,20 +173,10 @@
 {% endif %}
 {% comment %} Wholesale_Club_Item_Prices End {% endcomment %}
 
-
-          <div>xxx 9 WCItem_OriginalPrice = {{WCItem_OriginalPrice}}</div> {% comment %} 189.00 {% endcomment %}
-          <div>xxx 10 WCItem_CompareAtPrice = {{ WCItem_CompareAtPrice}}</div> {% comment %} 189 {% endcomment %}
-
-          <div>xxx 11 WCItem_Price = {{WCItem_Price}}</div> {% comment %} 94.50 {% endcomment %}
-
-
             {% if WCItem_CompareAtPrice > WCItem_Price %}
               {% assign saving = WCItem_CompareAtPrice | minus: WCItem_Price | times: item.quantity %}
               {% assign total_saving = saving | plus: total_saving %}
             {% endif %}
-
-                      <div>xxx 12 saving = {{saving}}</div> {% comment %} 94.50 {% endcomment %}
-                      <div>xxx 13 total_saving = {{total_saving }}</div> {% comment %} 159 {% endcomment %}
 
             <div class="cart__card container is-align-center" data-cart-item="{{ item.key }}" data-variant-id="{{ item.id }}" data-line-item="{{ forloop.index }}">
               <div class="cart__image">
@@ -301,10 +233,6 @@
                   <p>
                     {% if WCItem_OriginalPrice > 0 %}
                       <span class="money {% if WCItem_OriginalPrice < WCItem_CompareAtPrice %}sale{% endif %}">
-                       
-<div>xxx 1 WCItem_OriginalPrice = {{WCItem_OriginalPrice}}</div> {% comment %} 139.00 {% endcomment %}
-<div>xxx 2 WCItem_CompareAtPrice = {{ WCItem_CompareAtPrice}}</div> {% comment %} blank{% endcomment %}
-
                           {% if WCItem_OriginalPrice < WCItem_CompareAtPrice %}
                             <span class="money was-price">
                               {% render 'price-element', price: WCItem_CompareAtPrice %}
@@ -379,8 +307,6 @@
             {% comment %} add up the compare-at-prices for cart total b4 discount - am {% endcomment %}
             {% assign original_price_x_quantity = WCItem_OriginalPrice | times: item.quantity %}
             {% assign wholesale_cart_pretotal = wholesale_cart_pretotal | plus: original_price_x_quantity %}
-                    <div>xxx 14 original_price_x_quantity = {{original_price_x_quantity}}</div> {% comment %} 189 {% endcomment %}
-                    <div>xxx 15 wholesale_cart_pretotal = {{wholesale_cart_pretotal}}</div> {% comment %} 318 {% endcomment %}
 
           {% endfor %}
 
