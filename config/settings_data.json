@@ -815,7 +815,7 @@
             "type": "content",
             "settings": {
               "title": "Do I have to pay to return my item? ",
-              "answer": "<p>Return shipping for exchanges or store credits is free in the U.S.! For refunds we subtract the original cost of shipping and any cost of return shipping from your refund. Our <a href=\"http:\/\/halterego.returnscenter.com\" target=\"_blank\" title=\"http:\/\/halterego.returnscenter.com\">return center<\/a> below will purchase and print the shipping label for you. return shipping labels expire 20 days after they are generated.<\/p>"
+              "answer": "<p>Return shipping for exchanges or store credits is free in the U.S. Our <a href=\"http:\/\/halterego.returnscenter.com\" target=\"_blank\" title=\"http:\/\/halterego.returnscenter.com\">return center<\/a> will purchase and print a shipping label for you. Return shipping labels expire 20 days after they are generated.<\/p><p>For refunds we subtract the original cost of shipping and any cost of return shipping from your refund. <\/p>"
             }
           },
           "9433d933-dd4f-480b-b3bf-155a9c151650": {
